@@ -193,7 +193,7 @@ The thresholds are evaluated using:
 
 The medium threshold provides a practical balance for the implemented system.
 
-# 🔮 Task 6: Network Traffic Forecasting
+# Task 6: Network Traffic Forecasting
 
 An LSTM forecasting model was developed to predict future network throughput.
 
