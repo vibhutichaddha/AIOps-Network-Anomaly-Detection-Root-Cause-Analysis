@@ -1,215 +1,504 @@
+# AIOps – Network Anomaly Detection & Root Cause Analysis
+
 ## Overview
 
-This project implements an AI-driven AIOps solution for telecom network monitoring using Machine Learning and Deep Learning techniques. It analyzes historical Key Performance Indicator (KPI) data to detect abnormal network behavior, forecast KPI trends, and support proactive network maintenance.
+This project implements an **AI-driven telecom network monitoring and AIOps system** using Machine Learning, Deep Learning, Time-Series Analysis, and Streamlit.
 
-The project uses:
+The system analyzes telecom Key Performance Indicators (KPIs) to:
 
-- Isolation Forest for unsupervised anomaly detection
-- Long Short-Term Memory (LSTM) Neural Network for time-series anomaly detection
-- Python, Pandas, Scikit-learn, PyTorch, and Matplotlib
-# Objectives
+- Monitor network performance
+- Detect abnormal network behavior
+- Detect time-series anomalies
+- Tune anomaly detection thresholds
+- Forecast future network traffic
+- Perform Root Cause Analysis (RCA)
+- Predict Quality of Service / Quality of Experience (QoS/QoE)
+- Label network conditions as Normal, Warning, or Critical
+- Visualize network health through an interactive Streamlit dashboard
 
-- Analyze telecom KPI time-series data.
-- Detect abnormal network conditions.
-- Forecast future KPI trends.
-- Improve Quality of Service (QoS).
-- Reduce manual network monitoring efforts.
+# Project Objectives
+
+The primary objective is to build an intelligent telecom monitoring system capable of identifying network degradation before it significantly impacts users.
+
+The project combines:
+
+- Time-Series Analysis
+- Isolation Forest
+- LSTM Neural Networks
+- Random Forest Classification
+- Rule-Based Root Cause Analysis
+- Traffic Forecasting
+- Streamlit Dashboard
 
 # Dataset
 
-The dataset contains 30 days of telecom KPI data collected every 5 minutes.
+The project uses a telecom KPI time-series dataset containing approximately 30 days of network measurements.
 
-### Features
+The data is collected at regular time intervals for multiple network cells.
 
-| Column | Description |
-|---------|-------------|
-| Timestamp | Date and time |
-| Cell_ID | Cell Tower ID |
+## Main Features
+
+| Feature | Description |
+|---|---|
+| Timestamp | Date and time of KPI measurement |
+| Cell_ID | Unique network cell identifier |
 | RSRP | Reference Signal Received Power |
-| SINR | Signal to Interference plus Noise Ratio |
-| Latency | Network latency (ms) |
-| Throughput | Data throughput (Mbps) |
-| Packet_Loss | Packet loss (%) |
-| Connected_Users | Number of active users |
-| QoS_Label | Service Quality |
-| KPI_Label | Network Status |
+| SINR | Signal-to-Interference-plus-Noise Ratio |
+| Latency | Network delay in milliseconds |
+| Throughput | Network throughput in Mbps |
+| Packet_Loss | Percentage of lost packets |
+| Connected_Users | Number of users connected to the cell |
+| QoS_Label | Good / Fair / Poor network quality |
+| KPI_Label | Normal / Warning / Critical network condition |
 
 # Technologies Used
 
 - Python
 - Pandas
 - NumPy
-- Matplotlib
 - Scikit-learn
 - PyTorch
+- Matplotlib
+- Plotly
+- Streamlit
 - Joblib
-- OpenPyXL
 
-# Project Structure
+# Task 1: Time-Series Data Exploration
 
-```
-telecom-network-aiops/
+The first task analyzes telecom KPI data as a time series.
 
-│
-|── telecom_kpi.csv
-│
-├── models/
-│   └── lstm_model.pth
-│
-├── task1_data_exploration.py
-├── task2_visualization.py
-├── task3_isolation_forest.py
-├── task4_lstm.py
-│
-├── lstm_detected_anomalies.csv
-├── detected_anomalies_only.csv
-│
-├── README.md
+## Activities
 
-# Task 1 – Time Series Data Exploration
-## Objectives
-
-- Load KPI dataset
-- Convert Timestamp into datetime format
-- Sort data chronologically
-- Detect missing timestamps
-- Identify missing KPI values
+- Load the KPI dataset
+- Convert Timestamp to datetime
+- Sort records chronologically
+- Identify missing timestamps
+- Detect missing KPI values
 - Analyze daily KPI trends
 - Analyze weekly KPI trends
 
-### Output
+## Outcome
 
-- Daily KPI graphs
-- Weekly KPI graphs
-- Statistical summary
+Time-series analysis provides an understanding of network behavior over different time periods and helps identify traffic peaks and performance degradation.
 
-# Task 2 – KPI Visualization Dashboard
+# Task 2: KPI Visualization Dashboard
 
-## Objectives
+Visualizations were developed for the major network KPIs.
 
-Visualize telecom network KPIs.
+## KPI Trends
 
-### Graphs
+- Throughput over time
+- Latency over time
+- SINR trend
+- RSRP trend
+- Packet Loss trend
+- Connected Users trend
 
-- Throughput Trend
-- Latency Trend
-- SINR Trend
-- RSRP Trend
-- Packet Loss Trend
-- Connected Users Trend
-- Daily KPI Trends
-- Weekly KPI Trends
-- Hourly Traffic Pattern
+Additional analysis includes:
 
-### Output
+- Daily average KPIs
+- Hourly traffic patterns
+- Weekly traffic comparison
 
-Multiple KPI visualization plots for network analysis.
+These visualizations make it easier to understand network behavior and identify abnormal periods.
 
-# Task 3 – Isolation Forest Anomaly Detection
+# Task 3: Isolation Forest Anomaly Detection
 
-## Objective
-
-Detect abnormal KPI behavior using an unsupervised machine learning algorithm.
-
-## Steps
-
-- Load KPI dataset
-- Select network KPIs
-- Normalize features
-- Train Isolation Forest
-- Detect anomalies
-- Export anomaly results
-
-### Output
-
-- isolation_forest_model.pkl
-- scaler.pkl
-- detected_anomalies.csv
-
-# Task 4 – LSTM-Based Time Series Anomaly Detection
-
-## Objective
-
-Train an LSTM model to learn normal telecom KPI behavior and detect anomalies based on prediction error.
+Isolation Forest was implemented for unsupervised anomaly detection.
 
 ## Workflow
 
-1. Load KPI data
-2. Normalize features
-3. Create sliding windows
-4. Build LSTM model
-5. Train model
-6. Predict next KPI values
-7. Compute prediction error
-8. Detect anomalies
-9. Visualize anomalous KPIs
-10. Save anomaly report
+```text
+KPI Dataset
+     ↓
+Feature Selection
+     ↓
+Normalization
+     ↓
+Isolation Forest
+     ↓
+Anomaly Score
+     ↓
+Normal / Anomaly
+```
+## Features
 
-### LSTM Architecture
+The model analyzes:
 
-- Input Layer
-- 2 LSTM Layers
-- Dropout Layer (0.2)
-- Fully Connected Layer
+- RSRP
+- SINR
+- Latency
+- Throughput
+- Packet Loss
+- Connected Users
 
-### Hyperparameters
+Isolation Forest is suitable because it can identify abnormal observations without requiring manually labeled anomaly data.
+
+# Task 4: LSTM-Based Anomaly Detection
+
+An LSTM neural network was developed to detect anomalies based on temporal KPI patterns.
+
+## Workflow
+
+```text
+Time-Series KPIs
+       ↓
+Normalization
+       ↓
+Sliding Windows
+       ↓
+LSTM Network
+       ↓
+KPI Prediction
+       ↓
+Prediction Error
+       ↓
+Anomaly Detection
+```
+
+## Model Configuration
 
 | Parameter | Value |
-|------------|-------|
-| Hidden Units | 64 |
-| Layers | 2 |
+|---|---:|
 | Sequence Length | 20 |
-| Epochs | 20 |
+| Hidden Units | 64 |
+| LSTM Layers | 2 |
 | Batch Size | 64 |
+| Epochs | 20 |
+| Learning Rate | 0.001 |
 | Optimizer | Adam |
-| Loss Function | Mean Squared Error |
+| Loss Function | MSE |
 
-### Output Files
+The model learns temporal network behavior and uses prediction error to identify unusual sequences.
 
-- models/lstm_model.pth
-- lstm_detected_anomalies.csv
-- detected_anomalies_only.csv
+# Task 5: Threshold Tuning
 
-# Anomaly Detection Process
+Different anomaly thresholds were evaluated to determine an appropriate balance between anomaly detection and false alarms.
 
-The LSTM predicts the next KPI values based on historical observations.
+## Thresholds
 
-Prediction Error is calculated using Mean Squared Error (MSE).
+| Threshold | Behaviour |
+|---|---|
+| Low – 90th percentile | High sensitivity |
+| Medium – 95th percentile | Balanced |
+| High – 99th percentile | Detects mainly severe anomalies |
 
-Samples with prediction error above the 95th percentile threshold are classified as anomalies.
+## Comparison
 
-# Visualizations
+The thresholds are evaluated using:
 
-The project generates:
+- Number of detected anomalies
+- False positives
+- Missed anomalies
 
-- Training Loss Curve
-- Throughput Anomaly Plot
-- Latency Anomaly Plot
-- SINR Anomaly Plot
-- RSRP Anomaly Plot
-- Packet Loss Anomaly Plot
-- Connected Users Anomaly Plot
+The medium threshold provides a practical balance for the implemented system.
 
-# Results
+# 🔮 Task 6: Network Traffic Forecasting
 
-The project successfully:
+An LSTM forecasting model was developed to predict future network throughput.
 
-- Explores telecom KPI time-series data
-- Visualizes network behavior
-- Detects anomalies using Isolation Forest
-- Detects anomalies using LSTM
-- Generates anomaly reports
-- Produces KPI visualizations
+## Forecast Horizons
 
-# Future Improvements
+- Next 24 hours
+- Next 7 days
 
-- LSTM Autoencoder
-- Transformer-based anomaly detection
-- Real-time streaming using Kafka
-- Streamlit dashboard
-- Root Cause Analysis
-- KPI Forecasting
-- Network Quality Prediction
+## Accuracy Metrics
 
-# Author
-Vibhuti Chaddha
+The forecasting model can be evaluated using:
+
+- Mean Absolute Error (MAE)
+- Root Mean Squared Error (RMSE)
+- Mean Absolute Percentage Error (MAPE)
+
+Traffic forecasting can help network operators anticipate high-load periods and allocate network resources proactively.
+
+# Task 7: Root Cause Analysis
+
+The Root Cause Analysis module analyzes detected anomalies and determines probable causes using KPI-based rules.
+
+| Observation | Probable Root Cause | Recommended Action |
+|---|---|---|
+| Low RSRP | Poor radio coverage | Optimize antenna tilt |
+| Low SINR | High interference | Review neighboring cells |
+| High Latency | Core network congestion | Check UPF utilization |
+| High Packet Loss | Backhaul issue | Inspect transport network |
+| Low Throughput | Heavy traffic load | Enable load balancing |
+| High Connected Users | Cell overload | Rebalance users / increase capacity |
+
+The RCA module generates:
+
+```text
+root_cause_analysis.csv
+root_cause_summary.csv
+```
+
+# Task 8: QoS/QoE Prediction
+
+A Random Forest classifier predicts network quality using:
+
+- RSRP
+- SINR
+- Latency
+- Packet Loss
+- Throughput
+
+## Classes
+
+```text
+Good
+Fair
+Poor
+```
+
+## Evaluation
+
+The classifier is evaluated using:
+
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+
+The trained model is stored as:
+
+```text
+qos_prediction_model.pkl
+```
+# Task 9: Data Labeling Strategy
+
+A rule-based labeling strategy classifies telemetry records as:
+
+- Normal
+- Warning
+- Critical
+
+## KPI Thresholds
+
+| KPI | Normal | Warning | Critical |
+|---|---|---|---|
+| RSRP | > -90 dBm | -90 to -105 | < -105 |
+| SINR | > 20 dB | 10–20 | < 10 |
+| Latency | < 20 ms | 20–50 | > 50 |
+| Packet Loss | < 1% | 1–3% | > 3% |
+
+The labeled dataset is exported as:
+
+```text
+telecom_kpi_labeled.csv
+```
+
+# Task 10: Final Streamlit Dashboard
+
+A Streamlit-based dashboard integrates the outputs of the complete AIOps pipeline.
+
+## Dashboard Features
+
+### Live KPI Trends
+
+Interactive visualization of:
+
+- RSRP
+- SINR
+- Latency
+- Throughput
+- Packet Loss
+- Connected Users
+
+### Detected Anomalies
+
+Displays anomalies identified by the anomaly detection models.
+
+### Forecast Graphs
+
+Displays network throughput forecasts for:
+
+- Next 24 hours
+- Next 7 days
+
+### QoS/QoE Prediction
+
+Displays predicted network quality:
+
+```text
+Good / Fair / Poor
+```
+
+### Root Cause Analysis
+
+Displays:
+
+```text
+Observation
+↓
+Possible Root Cause
+↓
+Recommended Action
+```
+
+### Cell-Wise KPI Status
+
+Shows network status for individual cells.
+
+### KPI Threshold Alerts
+
+Automatically generates warnings when KPI values exceed critical thresholds.
+
+# Task 11: Technical Report
+
+A technical report summarizes the complete project.
+
+The report contains:
+
+1. Problem Statement
+2. Dataset Description
+3. Time-Series Analysis
+4. Isolation Forest Results
+5. LSTM Model Summary
+6. Traffic Forecasting Results
+7. Root Cause Analysis
+8. QoS Prediction Results
+9. Conclusions
+10. Future Improvements
+
+# Installation
+
+## 1. Clone the Repository
+
+```bash
+git clone <your-repository-url>
+```
+
+Move into the project:
+
+```bash
+cd AIOps
+```
+
+## 2. Create Virtual Environment
+
+```bash
+python3 -m venv venv
+```
+
+Activate it on Linux:
+
+```bash
+source venv/bin/activate
+```
+
+On Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+---
+
+## 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Alternatively:
+
+```bash
+pip install pandas numpy matplotlib scikit-learn torch streamlit plotly joblib
+```
+# Running Individual Tasks
+
+Run the scripts sequentially:
+
+```bash
+python task1_time_series.py
+python task2_visualization.py
+python task3_isolation_forest.py
+python task4_lstm.py
+python task5_threshold_tuning.py
+python task6_network_forecasting.py
+python task7_root_cause_analysis.py
+python task8_qos_prediction.py
+python task9_data_labeling.py
+```
+# Running the Dashboard
+
+Activate the virtual environment:
+
+```bash
+source venv/bin/activate
+```
+
+Start Streamlit:
+
+```bash
+python -m streamlit run final_dashboard.py
+```
+
+Then open the address displayed by Streamlit in your browser.
+
+# Complete AIOps Pipeline
+
+```text
+               Telecom KPI Dataset
+                        │
+                        ▼
+              Time-Series Analysis
+                        │
+                        ▼
+                KPI Visualization
+                        │
+              ┌─────────┴─────────┐
+              ▼                   ▼
+       Isolation Forest          LSTM
+              │                   │
+              └─────────┬─────────┘
+                        ▼
+                Anomaly Detection
+                        │
+                        ▼
+                Threshold Tuning
+                        │
+             ┌──────────┴──────────┐
+             ▼                     ▼
+      Traffic Forecasting    Root Cause Analysis
+                                     │
+                                     ▼
+                              Recommended Action
+
+               KPI Dataset
+                    │
+                    ▼
+             QoS Prediction
+                    │
+                    ▼
+             Good / Fair / Poor
+
+                    +
+                    │
+                    ▼
+           KPI Labeling Strategy
+                    │
+                    ▼
+       Normal / Warning / Critical
+
+                    │
+                    ▼
+          Streamlit AIOps Dashboard
+```
+
+# Project Results
+
+The project demonstrates an end-to-end telecom AIOps pipeline capable of:
+
+- Monitoring telecom KPIs
+- Detecting network anomalies
+- Learning temporal network patterns
+- Forecasting future throughput
+- Identifying probable causes of anomalies
+- Recommending corrective actions
+- Predicting QoS/QoE
+- Generating network health labels
+- Providing interactive network monitoring through Streamlit
+
+## Author
+**Vibhuti Chaddha**
