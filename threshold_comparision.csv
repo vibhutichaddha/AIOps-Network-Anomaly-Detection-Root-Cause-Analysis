@@ -1,0 +1,4 @@
+Threshold,Threshold_Value,Detected_Anomalies,False_Positives,Missed_Anomalies
+Low,1.2590060600000001,8638,1295,431
+Medium,1.6717102400000001,4319,647,215
+High,4.205450020000001,864,129,43
